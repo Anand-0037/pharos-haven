@@ -101,12 +101,10 @@ export async function pharosNativeMetadata(
   const { url, chainId } = PHAROS_RPC[network];
   const lower = address.toLowerCase();
   return cached(`pharos:${network}:${lower}`, async () => {
-    const [nameHex, symHex, decHex, code] = (await Promise.all([
-      jsonRpc(url, "eth_call", [{ to: lower, data: ERC20_SELECTORS.name }, "latest"]),
-      jsonRpc(url, "eth_call", [{ to: lower, data: ERC20_SELECTORS.symbol }, "latest"]),
-      jsonRpc(url, "eth_call", [{ to: lower, data: ERC20_SELECTORS.decimals }, "latest"]),
-      jsonRpc(url, "eth_getCode", [lower, "latest"]),
-    ])) as [string, string, string, string];
+    const nameHex = await jsonRpc(url, "eth_call", [{ to: lower, data: ERC20_SELECTORS.name }, "latest"]) as string;
+    const symHex = await jsonRpc(url, "eth_call", [{ to: lower, data: ERC20_SELECTORS.symbol }, "latest"]) as string;
+    const decHex = await jsonRpc(url, "eth_call", [{ to: lower, data: ERC20_SELECTORS.decimals }, "latest"]) as string;
+    const code = await jsonRpc(url, "eth_getCode", [lower, "latest"]) as string;
     return {
       name: decodeAbiString(nameHex),
       symbol: decodeAbiString(symHex),
