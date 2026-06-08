@@ -111,17 +111,17 @@ export async function handleAggregateRiskScore(input: z.infer<typeof AggregateRi
 }
 
 function zodToJsonSchema(schema: z.ZodTypeAny): Record<string, unknown> {
-  const def = (schema as unknown as { _def: { typeName: string; shape?: () => Record<string, z.ZodTypeAny> } })._def;
-  if (def.typeName === "ZodObject" && def.shape) {
-    const shape = def.shape();
+  const shape = (schema as any).shape;
+  if (shape) {
     const properties: Record<string, unknown> = {};
     const required: string[] = [];
     for (const [k, v] of Object.entries(shape)) {
-      const vdef = (v as unknown as { _def: { typeName: string; values?: string[] }; description?: string })._def;
-      const desc = (v as unknown as { description?: string }).description;
-      if (vdef.typeName === "ZodNumber") properties[k] = { type: "number", description: desc };
-      else if (vdef.typeName === "ZodString") properties[k] = { type: "string", description: desc };
-      else if (vdef.typeName === "ZodEnum") properties[k] = { type: "string", enum: vdef.values, description: desc };
+      const vdef = (v as any)._def || (v as any).def || v;
+      const type = (v as any).type || vdef.typeName || vdef.type;
+      const desc = (v as any).description;
+      if (type === "number" || type === "ZodNumber") properties[k] = { type: "number", description: desc };
+      else if (type === "string" || type === "ZodString") properties[k] = { type: "string", description: desc };
+      else if (type === "enum" || type === "ZodEnum") properties[k] = { type: "string", enum: vdef.values, description: desc };
       else properties[k] = { description: desc };
       required.push(k);
     }

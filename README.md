@@ -14,7 +14,7 @@ Or add to Claude Desktop config: see `examples/claude-desktop-config.json`.
 
 ## Why this exists
 
-[ANAND TO REPLACE THIS PARAGRAPH] In 3 sentences: a previous wallet of mine was drained for ~$600 because I approved a malicious ERC-20. Pharos AI agents will get rugged the same way — at machine speed, autonomously — unless they vet every token before they touch it. Haven is that vetting layer, free and read-only.
+In April 2026, a wallet of mine was drained for ~$600 after I approved what looked like a routine ERC-20 — the contract had a hidden honeypot the explorer never surfaced. Pharos AI agents will hit the same rug at machine speed, autonomously signing thousands of approvals a day with no human in the loop. Haven is the read-only second opinion every agent runs before it touches an unknown token — free, dual-mode, 200 ms.
 
 ## What it does (3 tools)
 
