@@ -1,0 +1,29 @@
+{
+  "name": "pharos-haven",
+  "version": "0.1.0",
+  "description": "MCP server — safe place for AI agents to vet ERC-20 tokens on GoPlus 60+ chains and native Pharos",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsx src/server.ts",
+    "smoke": "bash tests/smoke.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT-0",
+  "type": "module",
+  "bin": {
+    "pharos-haven": "./dist/server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.2",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
