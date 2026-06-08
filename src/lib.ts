@@ -4,9 +4,11 @@ const ERC20_SELECTORS = {
   decimals: "0x313ce567",
 } as const;
 
+// Pharos Network endpoints — read-only, public, free.
+// Mainnet "Pacific Ocean" launched 2026-04-28. Testnet "Atlantic" is hackathon-grade.
 const PHAROS_RPC = {
-  mainnet: { url: "https://rpc.pharos.xyz", chainId: 1672 },
-  testnet: { url: "https://atlantic.dplabs-internal.com", chainId: 688689 },
+  mainnet: { url: "https://rpc.pharos.xyz", chainId: 1672 },   // Pacific Ocean
+  testnet: { url: "https://atlantic.dplabs-internal.com", chainId: 688689 }, // Atlantic
 } as const;
 
 const cache = new Map<string, { value: unknown; expires: number }>();
@@ -37,17 +39,22 @@ export async function goplusTokenSecurity(
   chainId: number,
   address: string,
 ): Promise<GoPlusTokenResult | null> {
+  if (chainId === 1672 || chainId === 688689) return null;
   const lower = address.toLowerCase();
   return cached(`goplus:${chainId}:${lower}`, async () => {
-    const url = `https://api.gopluslabs.io/api/v1/token_security/${chainId}?contract_addresses=${lower}`;
-    const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
-    if (!res.ok) throw new Error(`GoPlus HTTP ${res.status}`);
-    const data = (await res.json()) as {
-      code: number;
-      result?: Record<string, GoPlusTokenResult>;
-    };
-    if (data.code !== 1 || !data.result) return null;
-    return data.result[lower] ?? null;
+    try {
+      const url = `https://api.gopluslabs.io/api/v1/token_security/${chainId}?contract_addresses=${lower}`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+      if (!res.ok) throw new Error(`GoPlus HTTP ${res.status}`);
+      const data = (await res.json()) as {
+        code: number;
+        result?: Record<string, GoPlusTokenResult>;
+      };
+      if (data.code !== 1 || !data.result) return null;
+      return data.result[lower] ?? null;
+    } catch {
+      return null;
+    }
   });
 }
 

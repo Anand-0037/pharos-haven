@@ -1,6 +1,6 @@
 ---
 name: pharos-haven
-description: Vet ERC-20 tokens for honeypots, taxes, and proxy risks before any swap, bridge, or approve. Covers GoPlus 60+ EVM chains and native Pharos chains 1672 (mainnet) and 688689 (Atlantic testnet) via JSON-RPC. Returns a 0-100 risk score with safe/warn/block decision. Use whenever an agent encounters an unknown token contract.
+description: Vet ERC-20 tokens for honeypots, taxes, mintability, and proxy risks BEFORE swap or approve. The only Skill that answers on Pharos (chains 1672 mainnet, 688689 testnet) via native JSON-RPC, while still covering 60+ EVM chains via GoPlus. Returns a 0-100 risk score with safe/warn/block decision. Use whenever an agent encounters an unknown token contract.
 ---
 # Pharos Haven
 
@@ -19,6 +19,10 @@ Or add to Claude Desktop / Cursor config (see `examples/claude-desktop-config.js
 - `check_token_goplus(chainId, address)` — GoPlus security scan on 60+ chains.
 - `check_token_pharos_native(address, network)` — Pharos native ERC-20 metadata + deployment check.
 - `aggregate_risk_score(chainId, address)` — Single entry point. 0-100 score + safe/warn/block decision.
+
+## Composability
+
+Haven is built to be called by other Skills. See `examples/agent-loop.ts` for a 25-line safe-swap agent that consumes `aggregate_risk_score` before any approval. The same contract works as an OpenAI function-calling tool, an Anvita Flow Skill step, or a Cursor agent action.
 
 ## Example prompts for the agent
 

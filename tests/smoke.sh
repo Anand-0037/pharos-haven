@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Smokes 4+5 are the demo-critical pair: they prove the dual-mode moat live.
 set -e
 echo "== Smoke 1: USDT (Ethereum, chain 1) via GoPlus =="
 npx tsx -e "import('./src/tools.js').then(async m => { const r = await m.handleAggregateRiskScore({ chainId: 1, address: '0xdac17f958d2ee523a2206206994597c13d831ec7' }); console.log(JSON.stringify(r, null, 2)); if (r.decision !== 'safe') process.exit(1); })"
@@ -10,3 +11,11 @@ echo "== Smoke 3: CAKE (BSC, chain 56) via GoPlus =="
 npx tsx -e "import('./src/tools.js').then(async m => { const r = await m.handleAggregateRiskScore({ chainId: 56, address: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82' }); console.log(JSON.stringify(r, null, 2)); if (r.decision !== 'safe') process.exit(1); })"
 
 echo "== All 3 smokes passed =="
+
+echo "== Smoke 4: Pharos LINK on chain 1672 via GoPlus (expected: null/unknown) =="
+npx tsx -e "import('./src/tools.js').then(async m => { const r = await m.handleCheckTokenGoplus({ chainId: 1672, address: '0x51e2A24742Db77604B881d6781Ee16B5b8fcBE29' }); console.log('GoPlus on Pharos:', JSON.stringify(r, null, 2)); if (r.verdict !== 'unknown') { console.error('Expected unknown verdict — GoPlus does not cover Pharos 1672'); process.exit(1); } })"
+
+echo "== Smoke 5: Same token via aggregate_risk_score (expected: warn with Pharos-native reason) =="
+npx tsx -e "import('./src/tools.js').then(async m => { const r = await m.handleAggregateRiskScore({ chainId: 1672, address: '0x51e2A24742Db77604B881d6781Ee16B5b8fcBE29' }); console.log('Haven aggregate:', JSON.stringify(r, null, 2)); if (r.decision !== 'warn') process.exit(1); if (!r.reasons.some(x => x.toLowerCase().includes('pharos'))) process.exit(1); })"
+
+echo "== Dual-mode proof complete: GoPlus blind, Haven sees =="
