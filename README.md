@@ -8,48 +8,11 @@ Pharos mainnet is six weeks old. The Pharos AI Carnival will push 150,000 PROS o
 
 ## Architecture
 
-```mermaid
-flowchart TD
+![Pharos Haven Architecture](assets/arch-diagram.jpg)
 
-A["🤖 AI Agent
-Claude Desktop · Cursor · OpenAI · Anvita Flow"]
+### Token Verification Flow
 
-A -->|"MCP stdio"| B["🛡️ Pharos Haven
-3 typed tools · zod schemas"]
-
-B --> C{"chainId routing"}
-
-C -->|"1672 mainnet
-688689 Atlantic"| D["Pharos JSON-RPC
-eth_call · eth_getCode"]
-
-C -->|"1 · 56 · 137 · 8453
-42161 · +55 more"| E["GoPlus token_security
-60+ EVM chains"]
-
-D --> F["aggregate_risk_score
-compose + reason"]
-
-E --> F
-
-F --> G{"score 0–100"}
-
-G -->|"0–34"| H["✅ safe"]
-
-G -->|"35–69"| I["⚠️ warn"]
-
-G -->|"70–100"| J["🛑 block"]
-
-style B fill:#0ea5e9,stroke:#0c4a6e,color:#fff
-
-style F fill:#10b981,stroke:#064e3b,color:#fff
-
-style H fill:#22c55e,stroke:#14532d,color:#fff
-
-style I fill:#f59e0b,stroke:#78350f,color:#fff
-
-style J fill:#ef4444,stroke:#7f1d1d,color:#fff
-```
+![Pharos Haven Flow Diagram](assets/flow-diagram.jpg)
 
 ## Quickstart (30 seconds)
 
