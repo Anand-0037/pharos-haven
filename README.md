@@ -72,11 +72,12 @@ Or add to Claude Desktop config: see `examples/claude-desktop-config.json`.
 
 In April 2026, a wallet of mine was drained for ~$600 after I approved what looked like a routine ERC-20 — the contract had a hidden honeypot the explorer never surfaced. Pharos AI agents will hit the same rug at machine speed, autonomously signing thousands of approvals a day with no human in the loop. Haven is the read-only second opinion every agent runs before it touches an unknown token — free, dual-mode, 200 ms.
 
-## What it does (3 tools)
+## What it does (4 tools)
 
 - **check_token_goplus**: honeypot, taxes, mintable, proxy on 60+ EVM chains (GoPlus API).
 - **check_token_pharos_native**: ERC-20 metadata + deployment via Pharos JSON-RPC on chains 1672 and 688689.
 - **aggregate_risk_score**: 0–100 score + safe/warn/block decision. Single entry point.
+- **explain_risk_verdict**: natural language explanation + actionable AI agent recommendations. Dual-mode.
 
 **Pharos coverage.** Chains **1672** (Pacific Ocean mainnet) + **688689** (Atlantic testnet) via direct JSON-RPC. Method selectors: `name() 0x06fdde03`, `symbol() 0x95d89b41`, `decimals() 0x313ce567`, plus `eth_getCode`.
 

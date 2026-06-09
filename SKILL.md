@@ -4,7 +4,7 @@ description: Vet ERC-20 tokens for honeypots, taxes, mintability, and proxy risk
 ---
 # Pharos Haven
 
-MCP stdio server with 3 tools for ERC-20 token security on Pharos and 60+ other EVM chains.
+MCP stdio server with 4 tools for ERC-20 token security on Pharos and 60+ other EVM chains.
 
 ## Install
 
@@ -19,6 +19,7 @@ Or add to Claude Desktop / Cursor config (see `/examples/claude-desktop-config.j
 - `check_token_goplus(chainId, address)` — GoPlus security scan on 60+ chains.
 - `check_token_pharos_native(address, network)` — Pharos native ERC-20 metadata + deployment check.
 - `aggregate_risk_score(chainId, address)` — Single entry point. 0-100 score + safe/warn/block decision.
+- `explain_risk_verdict(chainId, address)` — Generates a human-friendly and AI-friendly natural language explanation and recommendation.
 
 ## Composability
 

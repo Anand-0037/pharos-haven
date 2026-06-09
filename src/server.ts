@@ -7,9 +7,11 @@ import {
   CheckTokenGoplusInput,
   CheckTokenPharosNativeInput,
   AggregateRiskScoreInput,
+  ExplainRiskVerdictInput,
   handleCheckTokenGoplus,
   handleCheckTokenPharosNative,
   handleAggregateRiskScore,
+  handleExplainRiskVerdict,
 } from "./tools.js";
 
 const server = new Server(
@@ -29,6 +31,8 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
       result = await handleCheckTokenPharosNative(CheckTokenPharosNativeInput.parse(args));
     } else if (name === "aggregate_risk_score") {
       result = await handleAggregateRiskScore(AggregateRiskScoreInput.parse(args));
+    } else if (name === "explain_risk_verdict") {
+      result = await handleExplainRiskVerdict(ExplainRiskVerdictInput.parse(args));
     } else {
       throw new Error(`Unknown tool: ${name}`);
     }

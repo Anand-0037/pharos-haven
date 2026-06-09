@@ -155,6 +155,37 @@ export async function handleAggregateRiskScore(input: z.infer<typeof AggregateRi
   };
 }
 
+export const ExplainRiskVerdictInput = z.object({
+  chainId: z.number().int().positive().describe("EVM chain ID. Auto-routes: 1672/688689 -> Pharos RPC; everything else -> GoPlus"),
+  address: z.string().regex(/^0x[a-fA-F0-9]{40}$/).describe("ERC-20 contract address"),
+});
+
+export async function handleExplainRiskVerdict(input: z.infer<typeof ExplainRiskVerdictInput>) {
+  const result = await handleAggregateRiskScore(input);
+  let explanation = `### Pharos Haven Risk Analysis for Token ${input.address}\n\n`;
+  explanation += `* **Chain ID**: ${input.chainId}\n`;
+  explanation += `* **Aggregate Risk Score**: ${result.score}/100\n`;
+  explanation += `* **Verdict**: ${result.decision.toUpperCase()}\n\n`;
+  explanation += `#### Findings:\n`;
+  for (const reason of result.reasons) {
+    explanation += `- ${reason}\n`;
+  }
+  explanation += `\n#### Recommendation for AI Agent:\n`;
+  if (result.decision === "block") {
+    explanation += `🛑 **CRITICAL RISK:** Do NOT interact with this token. The risk score is high, indicating a high likelihood of a honeypot, extreme fees, or other malicious patterns. Interaction may lead to loss of funds.`;
+  } else if (result.decision === "warn") {
+    explanation += `⚠️ **WARNING:** Proceed with caution. Soft risks (such as proxy/upgradeability or mintability) were detected, or the token is Pharos-native and lacks historical security data. Limit exposure and perform manual verification.`;
+  } else {
+    explanation += `✅ **SAFE:** No major risk factors were detected. The token appears to be standard and safe for typical transactions.`;
+  }
+  return {
+    score: result.score,
+    decision: result.decision,
+    explanation,
+    sources: result.sources,
+  };
+}
+
 function zodToJsonSchema(schema: z.ZodTypeAny): Record<string, unknown> {
   const shape = (schema as any).shape;
   if (shape) {
@@ -190,5 +221,10 @@ export const TOOL_DEFS = [
     name: "aggregate_risk_score",
     description: "Get a 0-100 risk score and safe/warn/block decision for any ERC-20 on any supported chain. Auto-routes to GoPlus (60+ chains) or Pharos native RPC (1672/688689). Use as the single entry point for token vetting.",
     inputSchema: zodToJsonSchema(AggregateRiskScoreInput),
+  },
+  {
+    name: "explain_risk_verdict",
+    description: "Generate a human-readable and AI-friendly natural language explanation/recommendation for an ERC-20 token's risk verdict on any chain.",
+    inputSchema: zodToJsonSchema(ExplainRiskVerdictInput),
   },
 ];

@@ -18,4 +18,7 @@ npx tsx -e "import('./src/tools.js').then(async m => { const r = await m.handleC
 echo "== Smoke 5: Same token via aggregate_risk_score (expected: warn with Pharos-native reason) =="
 npx tsx -e "import('./src/tools.js').then(async m => { const r = await m.handleAggregateRiskScore({ chainId: 1672, address: '0x51e2A24742Db77604B881d6781Ee16B5b8fcBE29' }); console.log('Haven aggregate:', JSON.stringify(r, null, 2)); if (r.decision !== 'warn') process.exit(1); if (!r.reasons.some(x => x.toLowerCase().includes('pharos'))) process.exit(1); })"
 
+echo "== Smoke 6: Same token via explain_risk_verdict (expected: explanation containing pharos-native findings) =="
+npx tsx -e "import('./src/tools.js').then(async m => { const r = await m.handleExplainRiskVerdict({ chainId: 1672, address: '0x51e2A24742Db77604B881d6781Ee16B5b8fcBE29' }); console.log('Haven explanation:', JSON.stringify(r, null, 2)); if (r.decision !== 'warn') process.exit(1); if (!r.explanation.includes('Pharos-native token')) process.exit(1); })"
+
 echo "== Dual-mode proof complete: GoPlus blind, Haven sees =="
