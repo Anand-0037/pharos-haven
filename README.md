@@ -1,10 +1,55 @@
 # Pharos Haven 
 
-> **Haven is the only Phase 1 Skill that answers on Pharos itself.** Every other security Skill in this hackathon stops at chains GoPlus indexes — none read Pharos mainnet 1672 or Atlantic 688689 directly. Haven combines GoPlus's 60-chain breadth with native Pharos JSON-RPC, so an agent gets one verdict whether the token lives on Ethereum or on the chain it's actually deployed to.
+> **Pharos Haven — the missing safety layer for the Pharos AI Agent economy.** Every future agent can call Haven before touching an unknown token. Haven combines GoPlus's 60-chain breadth with native Pharos JSON-RPC, so an agent gets one verdict whether the token lives on Ethereum or on the chain it's actually deployed to.
 
 ### Why this matters now
 
 Pharos mainnet is six weeks old. The Pharos AI Carnival will push 150,000 PROS of incentives toward agents that move value on-chain. Every one of those agents will encounter a Pharos-native ERC-20 with zero third-party security coverage. Haven is the vetting layer that ships before that wave arrives, not after the first rug.
+
+## Architecture
+
+```mermaid
+flowchart TD
+
+A["🤖 AI Agent
+Claude Desktop · Cursor · OpenAI · Anvita Flow"]
+
+A -->|"MCP stdio"| B["🛡️ Pharos Haven
+3 typed tools · zod schemas"]
+
+B --> C{"chainId routing"}
+
+C -->|"1672 mainnet
+688689 Atlantic"| D["Pharos JSON-RPC
+eth_call · eth_getCode"]
+
+C -->|"1 · 56 · 137 · 8453
+42161 · +55 more"| E["GoPlus token_security
+60+ EVM chains"]
+
+D --> F["aggregate_risk_score
+compose + reason"]
+
+E --> F
+
+F --> G{"score 0–100"}
+
+G -->|"0–34"| H["✅ safe"]
+
+G -->|"35–69"| I["⚠️ warn"]
+
+G -->|"70–100"| J["🛑 block"]
+
+style B fill:#0ea5e9,stroke:#0c4a6e,color:#fff
+
+style F fill:#10b981,stroke:#064e3b,color:#fff
+
+style H fill:#22c55e,stroke:#14532d,color:#fff
+
+style I fill:#f59e0b,stroke:#78350f,color:#fff
+
+style J fill:#ef4444,stroke:#7f1d1d,color:#fff
+```
 
 ## Quickstart (30 seconds)
 

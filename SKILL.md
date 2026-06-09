@@ -12,7 +12,7 @@ MCP stdio server with 3 tools for ERC-20 token security on Pharos and 60+ other 
 npx pharos-haven
 ```
 
-Or add to Claude Desktop / Cursor config (see `examples/claude-desktop-config.json`).
+Or add to Claude Desktop / Cursor config (see `/examples/claude-desktop-config.json`).
 
 ## Tools
 
