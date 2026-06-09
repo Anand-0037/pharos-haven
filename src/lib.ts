@@ -73,16 +73,30 @@ function decodeAbiString(hex: string): string {
 }
 
 async function jsonRpc(url: string, method: string, params: unknown[]): Promise<unknown> {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
-    signal: AbortSignal.timeout(5000),
-  });
-  if (!res.ok) throw new Error(`RPC HTTP ${res.status}`);
-  const data = (await res.json()) as { result?: unknown; error?: { message: string } };
-  if (data.error) throw new Error(`RPC error: ${data.error.message}`);
-  return data.result;
+  let attempts = 3;
+  let delay = 300;
+  while (attempts > 0) {
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
+        signal: AbortSignal.timeout(5000),
+      });
+      if (res.status === 429) {
+        throw new Error("HTTP 429 Rate Limit");
+      }
+      if (!res.ok) throw new Error(`RPC HTTP ${res.status}`);
+      const data = (await res.json()) as { result?: unknown; error?: { message: string } };
+      if (data.error) throw new Error(`RPC error: ${data.error.message}`);
+      return data.result;
+    } catch (err) {
+      attempts--;
+      if (attempts === 0) throw err;
+      await new Promise(resolve => setTimeout(resolve, delay));
+      delay *= 2;
+    }
+  }
 }
 
 export type PharosMetadata = {
