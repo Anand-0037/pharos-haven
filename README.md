@@ -29,7 +29,7 @@ cd pharos-haven && npm install && npm run dev
 
 Or add to Claude Desktop config: see `examples/claude-desktop-config.json`.
 
-> **Demo video:** [YouTube link to be filled before submission]
+> **Demo video:** [YouTube Video](https://www.youtube.com/watch?v=iC9YGdc-_A8)
 
 ## Why this exists
 
