@@ -15,7 +15,7 @@ import {
 } from "./tools.js";
 
 const server = new Server(
-  { name: "pharos-haven", version: "0.1.0" },
+  { name: "pharos-haven", version: "0.1.1" },
   { capabilities: { tools: {} } },
 );
 

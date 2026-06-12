@@ -1,11 +1,19 @@
 {
   "name": "pharos-haven",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP server — safe place for AI agents to vet ERC-20 tokens on GoPlus 60+ chains and native Pharos (mainnet 1672, Atlantic testnet 688689)",
   "main": "dist/server.js",
   "type": "module",
-  "bin": { "pharos-haven": "./dist/server.js" },
-  "files": ["dist/", "examples/", "SKILL.md", "README.md", "LICENSE"],
+  "bin": {
+    "pharos-haven": "dist/server.js"
+  },
+  "files": [
+    "dist/",
+    "examples/",
+    "SKILL.md",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
@@ -13,13 +21,31 @@
     "smoke": "bash tests/smoke.sh",
     "prepublishOnly": "tsc && chmod +x dist/server.js"
   },
-  "keywords": ["mcp", "model-context-protocol", "pharos", "erc20", "honeypot", "token-security", "ai-agent", "web3", "goplus", "agent-skill"],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "pharos",
+    "erc20",
+    "honeypot",
+    "token-security",
+    "ai-agent",
+    "web3",
+    "goplus",
+    "agent-skill"
+  ],
   "author": "Anand (agiwithai) <team@agiwithai.com>",
   "license": "MIT-0",
-  "repository": { "type": "git", "url": "git+https://github.com/Anand-0037/pharos-haven.git" },
-  "bugs": { "url": "https://github.com/Anand-0037/pharos-haven/issues" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anand-0037/pharos-haven.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Anand-0037/pharos-haven/issues"
+  },
   "homepage": "https://github.com/Anand-0037/pharos-haven#readme",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
     "zod": "^4.4.3"
